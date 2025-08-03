@@ -58,6 +58,7 @@ class _RegisterPagesState extends State<RegisterPages> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -70,6 +71,7 @@ class _RegisterPagesState extends State<RegisterPages> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: passWordController,
               decoration: InputDecoration(
                 hintText: 'Password',
@@ -83,6 +85,7 @@ class _RegisterPagesState extends State<RegisterPages> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: confirmPassController,
               decoration: InputDecoration(
                 hintText: 'Confirm Password',

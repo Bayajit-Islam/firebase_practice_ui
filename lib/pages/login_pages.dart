@@ -57,6 +57,7 @@ class _LogInPagesState extends State<LogInPages> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -69,6 +70,7 @@ class _LogInPagesState extends State<LogInPages> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: passWordController,
               decoration: InputDecoration(
                 hintText: 'Password',
