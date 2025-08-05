@@ -25,7 +25,10 @@ class _RegisterPagesState extends State<RegisterPages> {
     circleProgress();
     if (passWordController.text == confirmPassController.text) {
       try {
-        await Provider.of<FirebaseService>(context, listen: false).signUpwithEmail(
+        await Provider.of<FirebaseService>(
+          context,
+          listen: false,
+        ).signUpwithEmail(
           email: emailController.text,
           password: passWordController.text,
         );
@@ -211,13 +214,12 @@ class _RegisterPagesState extends State<RegisterPages> {
               onTap: () async {
                 final user = await Provider.of<FirebaseService>(
                   context,
-                  listen: false
+                  listen: false,
                 ).googleSignInMethod();
-                if (user == null) {
-                setState(() {
-                    erorreMessage = errorM.erorreMessage();
-                  });
-                } 
+                if (user != null) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
