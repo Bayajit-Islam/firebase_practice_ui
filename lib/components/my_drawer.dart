@@ -48,12 +48,7 @@ class MyDrawer extends StatelessWidget {
             ],
           ),
           ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePages()),
-              );
-            },
+            onTap: (){},
             leading: Icon(Icons.logout),
             title: Text('Logout'),
           ),
