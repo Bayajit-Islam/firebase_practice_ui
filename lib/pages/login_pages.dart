@@ -29,7 +29,10 @@ class _LogInPagesState extends State<LogInPages> {
       await Provider.of<FirebaseService>(
         context,
         listen: false,
-      ).signIn(email: emailController.text, password: passWordController.text);
+      ).signInwithEmail(
+        email: emailController.text,
+        password: passWordController.text,
+      );
       popPages();
       setState(() {
         erorreMessage = 'Log In Succesful';
@@ -61,6 +64,7 @@ class _LogInPagesState extends State<LogInPages> {
 
   @override
   Widget build(BuildContext context) {
+    final errorM = Provider.of<FirebaseService>(context);
     return Scaffold(
       backgroundColor: Color(0xff00224F),
       appBar: AppBar(
@@ -125,11 +129,12 @@ class _LogInPagesState extends State<LogInPages> {
           ),
 
           //erorre massage
+          SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44.0),
             child: Center(
               child: Text(
-                erorreMessage,
+              errorM.erorreMessage() ??  erorreMessage ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.red,
@@ -195,19 +200,35 @@ class _LogInPagesState extends State<LogInPages> {
           SizedBox(height: 22),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(34, 255, 255, 255),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.android, color: Colors.white),
-                    Text('Google', style: TextStyle(color: Colors.white)),
-                  ],
+            child: GestureDetector(
+              onTap: () async {
+                final user = await Provider.of<FirebaseService>(
+                  context,
+                  listen: false,
+                ).googleSignInMethod();
+                if (user != null) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                } else {
+                  setState(() {
+                    erorreMessage = "Google Sign In Failed";
+                  });
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(34, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.android, color: Colors.white),
+                      Text('Google', style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
                 ),
               ),
             ),

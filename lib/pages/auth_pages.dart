@@ -14,7 +14,10 @@ class AuthPages extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: Provider.of<FirebaseService>(context).authStateChanges,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData &&  snapshot.data  !=  null) {
             return HomePages();
           } else {
             return IntroPages();

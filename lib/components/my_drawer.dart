@@ -52,6 +52,7 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               Provider.of<FirebaseService>(context,listen: false).logOut();
+               Navigator.of(context).pop();
             },
             leading: Icon(Icons.logout),
             title: Text('Logout'),

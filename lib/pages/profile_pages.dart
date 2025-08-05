@@ -25,7 +25,7 @@ class ProfilePages extends StatelessWidget {
                 child: ListTile(
                   leading: CircleAvatar(),
                   title: Text(user!.displayName ?? 'none'),
-                  subtitle: Text(user.email ?? 'None'),
+                  subtitle: Text("${user.email}"),
                 ),
               ),
             ),

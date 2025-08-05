@@ -11,7 +11,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
   runApp(
-    ChangeNotifierProvider(create:(context) => FirebaseService() ,child: const MyApp(),)
+    ChangeNotifierProvider(create:(context) => FirebaseService() ,
+    child: const MyApp(),)
   );
 }
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: AuthPages());
+    return MaterialApp(debugShowCheckedModeBanner: false,
+    home: AuthPages());
   }
 }

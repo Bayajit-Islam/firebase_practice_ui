@@ -25,7 +25,7 @@ class _RegisterPagesState extends State<RegisterPages> {
     circleProgress();
     if (passWordController.text == confirmPassController.text) {
       try {
-        await Provider.of<FirebaseService>(context, listen: false).signUp(
+        await Provider.of<FirebaseService>(context, listen: false).signUpwithEmail(
           email: emailController.text,
           password: passWordController.text,
         );
@@ -66,6 +66,7 @@ class _RegisterPagesState extends State<RegisterPages> {
 
   @override
   Widget build(BuildContext context) {
+    final errorM = Provider.of<FirebaseService>(context);
     return Scaffold(
       backgroundColor: Color(0xff00224F),
       appBar: AppBar(
@@ -206,19 +207,32 @@ class _RegisterPagesState extends State<RegisterPages> {
           SizedBox(height: 22),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(34, 255, 255, 255),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.android, color: Colors.white),
-                    Text('Google', style: TextStyle(color: Colors.white)),
-                  ],
+            child: GestureDetector(
+              onTap: () async {
+                final user = await Provider.of<FirebaseService>(
+                  context,
+                  listen: false
+                ).googleSignInMethod();
+                if (user == null) {
+                setState(() {
+                    erorreMessage = errorM.erorreMessage();
+                  });
+                } 
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(34, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.android, color: Colors.white),
+                      Text('Google', style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
                 ),
               ),
             ),
