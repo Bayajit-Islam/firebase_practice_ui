@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class FirebaseService {
+class FirebaseService extends ChangeNotifier {
   //init  firebase
   final firebaseAuth = FirebaseAuth.instance;
 
@@ -28,14 +29,14 @@ class FirebaseService {
     required String email,
     required String password,
   }) async {
-    return await firebaseAuth.signInWithEmailAndPassword(
+    return await firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
   //log  out
-  void logOut() async{
-   await firebaseAuth.signOut();
+  Future<void> logOut() async {
+    await firebaseAuth.signOut();
   }
 }

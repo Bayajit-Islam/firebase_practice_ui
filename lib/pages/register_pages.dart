@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_google_auth/pages/login_pages.dart';
+import 'package:firebase_google_auth/service.dart/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({super.key});
@@ -14,6 +17,52 @@ class _RegisterPagesState extends State<RegisterPages> {
   final passWordController = TextEditingController();
 
   final confirmPassController = TextEditingController();
+  //erore masage
+  String erorreMessage = '';
+
+  //sign in
+  void signUp() async {
+    circleProgress();
+    if (passWordController.text == confirmPassController.text) {
+      try {
+        await Provider.of<FirebaseService>(context, listen: false).signUp(
+          email: emailController.text,
+          password: passWordController.text,
+        );
+        popPages();
+        setState(() {
+          erorreMessage = "Account Create Succesfull- Please Log in";
+        });
+        if (!mounted) return;
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      } on FirebaseAuthException catch (e) {
+        popPages();
+        setState(() {
+          erorreMessage = e.message ?? "There is an erorre";
+        });
+      }
+    } else {
+      setState(() {
+        popPages();
+        erorreMessage = "Password Not Same";
+      });
+    }
+  }
+
+  //loading circle progress
+  void circleProgress() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  //pop pages
+  void popPages() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +143,26 @@ class _RegisterPagesState extends State<RegisterPages> {
             ),
           ),
 
+          //erorre massage
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 44.0),
+            child: Center(
+              child: Text(
+                erorreMessage,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
           //loginbutton
           SizedBox(height: 35),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44),
             child: GestureDetector(
-              onTap: () {},
+              onTap: signUp,
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(

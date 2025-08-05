@@ -1,7 +1,9 @@
 import 'package:firebase_google_auth/pages/home_pages.dart';
 import 'package:firebase_google_auth/pages/profile_pages.dart';
 import 'package:firebase_google_auth/pages/setting_pages.dart';
+import 'package:firebase_google_auth/service.dart/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -48,7 +50,9 @@ class MyDrawer extends StatelessWidget {
             ],
           ),
           ListTile(
-            onTap: (){},
+            onTap: () {
+              Provider.of<FirebaseService>(context,listen: false).logOut();
+            },
             leading: Icon(Icons.logout),
             title: Text('Logout'),
           ),

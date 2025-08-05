@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_google_auth/pages/home_pages.dart';
 import 'package:firebase_google_auth/pages/register_pages.dart';
+import 'package:firebase_google_auth/service.dart/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LogInPages extends StatefulWidget {
   const LogInPages({super.key});
@@ -13,6 +16,48 @@ class _LogInPagesState extends State<LogInPages> {
   final emailController = TextEditingController();
 
   final passWordController = TextEditingController();
+
+  String erorreMessage = '';
+
+  //sign in
+  void singIn() async {
+    setState(() {
+      erorreMessage = '';
+    });
+    circleProgress();
+    try {
+      await Provider.of<FirebaseService>(
+        context,
+        listen: false,
+      ).signIn(email: emailController.text, password: passWordController.text);
+      popPages();
+      setState(() {
+        erorreMessage = 'Log In Succesful';
+      });
+      if (!mounted) return;
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } on FirebaseAuthException catch (e) {
+      popPages();
+      setState(() {
+        erorreMessage = e.message ?? "There is an erorre";
+      });
+    }
+  }
+
+  //loading circle progress
+  void circleProgress() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  //pop pages
+  void popPages() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +123,27 @@ class _LogInPagesState extends State<LogInPages> {
               ),
             ),
           ),
+
+          //erorre massage
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 44.0),
+            child: Center(
+              child: Text(
+                erorreMessage,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
           //loginbutton
           SizedBox(height: 35),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44),
             child: GestureDetector(
-              onTap: () {},
+              onTap: singIn,
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
